@@ -1,0 +1,70 @@
+.canvas-container {
+    position:relative;
+    display: inline-block;
+}
+
+canvas {
+    cursor: text;
+}
+
+.label-tool {
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    position: absolute;
+    display: none;
+    z-index: 3;
+    box-sizing: border-box;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 1px 0px 7px 3px rgba(0,0,0,0.61);
+}
+/* rgba(173, 216, 230, 0.8) */
+
+.label-buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.label-option {
+    cursor: pointer;
+    display: flex;
+    column-gap: 20px;
+    height: 30px;
+    align-items: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 700;
+    color: grey;
+}
+
+.label-option:hover{
+    background-color: lightgray;
+    color:black;
+}
+
+.label-option-color {
+    margin-left: 30px;
+    height: 14px;
+    width: 14px;
+    border-radius: 7px;
+}
+
+
+.label-tool.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.label-tool input {
+    box-sizing: border-box;
+    width: 180px;
+    border: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 10px 0px;
+    outline-color: rgba(173, 216, 230, 0.8);
+}
