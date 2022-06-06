@@ -162,4 +162,4 @@ function getLabelTagContainer(label, ctx, props) {
     return container;
 }
 
-export { initializeLabels, copyLabels, getLabelTagContainer };
+export { initializeLabels, copyLabels };

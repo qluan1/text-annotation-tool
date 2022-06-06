@@ -48,7 +48,10 @@ function LabelTool(props) {
             for (let i = 0; i < props.templates.length; i++) {
                 let t = props.templates[i];
                 let q = '#label-option-' + t.name;
-                document.querySelector(q).removeEventListener('click', listeners[i]);         
+                let ele = document.querySelector(q);
+                if (ele !== null) {
+                    removeEventListener('click', listeners[i]);
+                }    
             }            
         });
     }, []);

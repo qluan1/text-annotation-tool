@@ -4,13 +4,16 @@ import {
     getViewport, handleMouseEdgeScroll, 
     useStateRef 
 } from './util';
-import { initializeLabels, copyLabels, getLabelTagContainer } from './label';
+
+import { initializeLabels, copyLabels } from './label';
 import getCharLabelPos, {parseStrLines} from './getCharLabelPos'
 import { drawText, highlight, drawLabel } from './draw';
 import { getStartEndIndex } from './selection';
 import LabelTool, {getLabelToolPosition} from './LabelTool';
+import TagContainers from './TagContainers';
 
 import '../Canvas.css';
+
 
 const Canvas = (props) => {
 
@@ -44,7 +47,6 @@ const Canvas = (props) => {
     );
 
     const height = charY[charY.length - 1] + props.padding;
-
 
     let [mousePos, setMousePos] = useState({X:0, Y:0});
     let [isMouseDown, setIsMouseDown] = useState(false);
@@ -178,24 +180,6 @@ const Canvas = (props) => {
             PIXEL_RATIO
         );
 
-        // get invisible container for each labels
-        // in order to attach listeners that allow users
-        // to interact with individual label
-        initializedLabels.forEach((l) => {
-            let tagCon = getLabelTagContainer(l, ctx, props);
-            tagCon.addEventListener('mouseenter', () => {
-                let hoveredLabel = {};
-                hoveredLabel.start = l.start;
-                hoveredLabel.end = l.end;
-                hoveredLabel.textColor = l.textColor;
-                setMouseHoverLabel(hoveredLabel);
-            })
-            tagCon.addEventListener('mouseleave', () => {
-                setMouseHoverLabel({start:null, end: null});
-            })
-            container.appendChild(tagCon);
-        });
-
         ctx.clearRect(0, 0, props.canvasWidth, height);
         drawLabel(
             ctx,
@@ -308,6 +292,15 @@ const Canvas = (props) => {
                         left: '0px',
                         zIndex: '0'
                     }}    
+                />
+                <TagContainers
+                    str = {props.str}
+                    labelFontSize = {props.labelFontSize}
+                    labelFontFamily = {props.labelFontFamily}
+                    initializedLabels = {initializedLabels}
+                    setMouseHoverLabel = {setMouseHoverLabel}
+                    deleteLabel = {props.deleteLabel}
+                    popConfDial = {props.popConfDial}
                 />
                 <LabelTool
                     templates = {props.labelTemplates} 

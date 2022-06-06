@@ -102,8 +102,8 @@ const fitSegment = (seg, layers) => {
         for (let s of layers[current]) {
             if ( // if two segments are NOT disjoint
                 !(
-                    seg[0] > s[1] ||
-                    s[0] > seg[1]
+                    seg.leftBound > s.rightBound ||
+                    s.leftBound > seg.rightBound
                 ) 
             ) {
                 canFit = false;

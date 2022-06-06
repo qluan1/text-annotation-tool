@@ -1,0 +1,54 @@
+#confirm-dialog-background {
+    position: absolute;
+    background-color: rgba(125, 125, 125, 0.8);
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+}
+
+#confirm-dialog {
+    margin: 30vh auto;
+    width: 600px;
+    height: 300px;
+    border-radius: 15px;
+    background-color: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 50px;
+}
+
+#confirm-dialog-title {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 25px;
+    font-weight: 600;
+    color: #2e3047;
+}
+
+#confirm-dialog-content {
+    margin-top:20px;
+}
+
+#confirm-dialog button {
+    width: 200px;
+    height: 40px;
+    cursor: pointer;
+    margin-top: 20px;
+    border: none;
+    border-radius: 15px;;
+}
+
+#confirm-dialog button:hover {
+    box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.45);
+}
+
+#confirm-dialog-confirm {
+    background-color: RGBA(244, 67, 53, 1);
+    color: white;
+}
+
+#confirm-dialog-cancel {
+    background-color: RGB(4, 170, 109);
+    color: white;
+}

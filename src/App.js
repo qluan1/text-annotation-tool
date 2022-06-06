@@ -4,7 +4,7 @@ import Canvas from './components/Canvas';
 import './App.css';
 import Sidebar from './components/Sidebar';
 import { getViewport, useStateRef } from './components/util';
-
+import ConfirmDialog from './components/ConfirmDialog';
 
 const texts = [
     (
@@ -144,7 +144,7 @@ function App () {
         setAnnotationText(getTextById(id));
         setAnnotationLabels(getLabelById(id));
         setCurrentTaskId(id);
-        setDrawState(!drawState);
+        setDrawState(!drawStateRef.current);
     };
 
     const addLabelToTaskById = (id, label) => {
@@ -152,22 +152,43 @@ function App () {
         if (canAddLabel(label, labelArray)) {
             labelArray.push(label);
             setAnnotationLabels(labelArray);
-            setDrawState(!drawState);
+            setDrawState(!drawStateRef.current);
             return true;
         }
         return false;
     }
 
+    const deleteLabelFromTaskById = (id, labelName, labelStart, labelEnd) => {
+        let labelArray = getLabelById(id);
+        for (let i = 0; i < labelArray.length; i++) {
+            if (
+                labelArray[i].name === labelName &&
+                labelArray[i].start === labelStart &&
+                labelArray[i].end === labelEnd
+            ){
+                labelArray.splice(i, 1);
+                setAnnotationLabels(labelArray);
+                setDrawState(!drawStateRef.current);
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     // State Hooks
     let [currentTaskId, setCurrentTaskId] = useState(0);
     let [annotationText, setAnnotationText] = useState(getTextById(0));
     let [annotationLabels, setAnnotationLabels] = useState(getLabelById(0));
-    let [drawState, setDrawState] = useState(true);
+    let [confDialProps, setConfDialProps] = useState({isActive: false});
+    let [drawState, setDrawState, drawStateRef] = useStateRef(true);
+
 
     return (
-        <div id="App" key = {drawState}>
+        <div 
+            id="App" 
+            key = {drawState}
+        >
             <Sidebar 
                 sidebarStyle = {sidebarStyle}
                 totalTaskNumber = {taskTotal}
@@ -189,8 +210,23 @@ function App () {
                         labelGap = {6}
                         labelTemplates = {labelTemplates}
                         addLabel = {addLabelToTaskById.bind(null, currentTaskId)}
+                        deleteLabel = {deleteLabelFromTaskById.bind(null, currentTaskId)}
+                        popConfDial = { (p) => {
+                            setConfDialProps(p);
+                            setDrawState(!drawStateRef.current);
+                        }}
                     />
             </div>
+            <ConfirmDialog
+                title = {confDialProps.title}
+                content = {confDialProps.content}
+                onConfirm = {confDialProps.onConfirm}
+                isActive = {confDialProps.isActive}
+                setConfDialProps = {(p) => {
+                    setConfDialProps(p);
+                    setDrawState(!drawStateRef.current);
+                }}
+            />
         </div>
     );
 }
