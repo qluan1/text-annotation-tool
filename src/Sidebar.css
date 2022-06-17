@@ -1,44 +1,116 @@
 .sidebar {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    row-gap: 20px;
-    min-width: 300px;
+    align-items: stretch;
+    row-gap: 10px;
     padding: 2em 1rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     background-color: #2e3047;
 }
 
-.sidebar .sidebar-title {
+.sidebar-title {
     font-weight: 700;
     color: white;
     text-transform: uppercase;
 }
 
-.sidebar .menu {
-    margin: 0 -1rem;
+.sidebar-category-title {
+    font-weight: 400;
+    color: lightgrey;
+    border-bottom: solid 1px lightgrey;
+    margin: 30px 0px 10px 0px;
 }
 
-.sidebar .menu .menu-item {
-    display: block;
-    padding: 1em;
-    color: #FFFFFF;
-    text-decoration: none;
-    transition: 0.2s linear;
+.category-inoutput {
+    display: flex;
+    justify-content: space-evenly;
 }
 
-.sidebar .menu .menu-item:hover,
-.sidebar .menu .menu-item.is-active {
-    color: #3bba9c;
-    border-right: 5px solid #3bba9c;
+.file-inoutput-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    cursor: pointer;
+    filter: invert(99%) sepia(1%) saturate(0%) hue-rotate(151deg) brightness(102%) contrast(103%);
 }
+
+.file-inoutput-label:hover {
+    filter:none;
+    background-color: white;
+    transition: 0.2s;
+}
+
+
+.file-inoutput-label span {
+    font-size: small;
+    margin-top: 10px;
+}
+
+.nav-display-options {
+    font-size: small;
+    color: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 5px;
+    column-gap: 5px;
+}
+
+.nav-display-options select {
+    justify-self: stretch;
+}
+
 
 .nav-task {
     display: flex;
     flex-direction: column;
     align-items: center;
     row-gap: 10px;
+    color: white;
 }
 
-.nav-task p {
+.nav-task input {
+    width: 65px;
+    height: 30px;
+    border-radius: 5px;
+    text-align: right;
+    margin: 5px;
+    padding-right: 5px;
+}
+
+.nav-task button {
+    width: 65px;
+    height: 30px;
+    border-radius: 5px;
+    transition: 0.2s;
+    margin: 5px;
+    background-color: white;
+}
+
+.nav-task button:hover {
     color: white;
+    background-color: darkgrey;
+    transition: 0.2s;
+}
+
+
+
+@media (max-width: 1000px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -300px;
+        height: 100vh;
+        width: 100%;
+        max-width: 300px;
+        transition: 0.2s linear;
+        z-index: 2;
+    }
+
+    .sidebar.is-active {
+        left: 0;
+    }
 }

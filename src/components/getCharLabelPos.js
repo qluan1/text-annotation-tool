@@ -1,10 +1,5 @@
 function parseStrLines(props) {
-    let str = props.str;
-    let canvasWidth = props.canvasWidth;
-    let fontSize = props.fontSize;
-    let fontFamily = props.fontFamily;
-    let padding = props.padding;
-    let charGap = props.charGap;
+    let str = props.task.context;
 
     if (str === undefined || typeof(str) !== typeof('string')) {
         return [[], [], []];
@@ -12,7 +7,6 @@ function parseStrLines(props) {
     let charX = Array(str.length);
     let charWidth = Array(str.length);
     let charLines = [];
-
 
     if (props.strLan === 'ENG') {
         parseEngLines(props, charX, charWidth, charLines);
@@ -30,11 +24,36 @@ function getCharLabelPos(
     labels,
 ) {
     // get the draw instruction for texts and labels
-    let padding = props.padding;
-    let fontSize = props.fontSize;
-    let lineGap = props.lineGap;
-    let labelFontSize = props.labelFontSize;
-    let labelGap = props.labelGap;
+
+    let fontSize = parseInt(props.displaySettings.fontSize);
+    if (isNaN(fontSize)) {
+        fontSize = 30;
+    }
+    
+    let padding = parseInt(props.displaySettings.padding);
+    if (isNaN(padding)) {
+        padding = 30;
+    }
+
+    let charGap = parseInt(props.displaySettings.charGap);
+    if (isNaN(charGap)) {
+        charGap = 0;
+    }
+
+    let lineGap = parseInt(props.displaySettings.lineGap);
+    if (isNaN(lineGap)) {
+        lineGap = 20;
+    }
+
+    let labelFontSize = parseInt(props.displaySettings.labelFontSize);
+    if (isNaN(labelFontSize)) {
+        labelFontSize = 15;
+    }
+
+    let labelGap = parseInt(props.displaySettings.labelGap);
+    if (isNaN(labelGap)) {
+        labelGap = 6;
+    }
 
     let charY = Array(charX.length);
     let labelsDrawInstruction = [];
@@ -121,12 +140,25 @@ const fitSegment = (seg, layers) => {
 };
 
 const parseEngLines = (props, charX, charWidth, charLines) => {
-    let padding = props.padding;
-    let fontSize = props.fontSize;
-    let fontFamily = props.fontFamily;
+
+    let str = props.task.context;
+    let fontFamily = props.displaySettings.fontFamily;
     let canvasWidth = props.canvasWidth;
-    let charGap = props.charGap;
-    let str = props.str;
+    let fontSize = parseInt(props.displaySettings.fontSize);
+    if (isNaN(fontSize)) {
+        fontSize = 30;
+    }
+    
+    let padding = parseInt(props.displaySettings.padding);
+    if (isNaN(padding)) {
+        padding = 50;
+    }
+
+    let charGap = parseInt(props.displaySettings.charGap);
+    if (isNaN(charGap)) {
+        charGap = 0;
+    }
+
 
     let ctx = document.createElement('canvas').getContext('2d');
     ctx.font = fontSize + 'px ' + fontFamily;
@@ -181,12 +213,25 @@ const parseEngLines = (props, charX, charWidth, charLines) => {
 };
 
 const parseNoneEngLines = (props, charX, charWidth, charLines) => {
-    let padding = props.padding;
-    let fontSize = props.fontSize;
-    let fontFamily = props.fontFamily;
+
+    let str = props.task.context;
+    let fontFamily = props.displaySettings.fontFamily;
     let canvasWidth = props.canvasWidth;
-    let charGap = props.charGap;
-    let str = props.str;
+    let fontSize = parseInt(props.displaySettings. fontSize);
+    if (isNaN(fontSize)) {
+        fontSize = 30;
+    }
+    
+    let padding = parseInt(props.displaySettings.padding);
+    if (isNaN(padding)) {
+        padding = 50;
+    }
+
+    let charGap = parseInt(props.displaySettings.charGap);
+    if (isNaN(charGap)) {
+        charGap = 0;
+    }
+
 
     let ctx = document.createElement('canvas').getContext('2d');
     ctx.font = fontSize + 'px ' + fontFamily;

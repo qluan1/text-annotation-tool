@@ -18,35 +18,38 @@ function copyLabels (labels) {
     ){
         return [];
     }
-    return labels.map(
-        (l) => {
+
+    let res = [];
+    for (let i = 0; i < labels.length; i++) {
+        let l = labels[i];
+        try {
             let r = {};
             r.name = l.name;
-            r.start = l.start;
-            r.end = l.end;
+            r.startIndex = parseInt(l.startIndex);
+            r.endIndex = parseInt(l.endIndex);
             if (l.textColor !== undefined) {
                 r.textColor = l.textColor;
             }
-            if (l.highlightColor !== undefined) {
-                r.highlightColor = l.highlightColor;
-            }
-            return r;
+            res.push(r);
+        } catch (e) {
+            console.error(e);
         }
-    );
+    }
+    return res;
 }
 
 const getSegments = (label, charLines, charX, charWidth, props) => {
     if (charLines.length === 0) return [];
 
     let startLine; // use bisection to find starting line
-    if (charLines[0][1] >= label.start) {
+    if (charLines[0][1] >= label.startIndex) {
         startLine = 0;
     } else {
         let left = 0;
         let right = charLines.length - 1;
         while (left < right - 1) {
             let mid = Math.floor((left + right)/2);
-            if (charLines[mid][1] < label.start) {
+            if (charLines[mid][1] < label.startIndex) {
                 left = mid;
             } else {
                 right = mid;
@@ -56,14 +59,14 @@ const getSegments = (label, charLines, charX, charWidth, props) => {
     }
 
     let endLine; // use bisection to find ending line
-    if (charLines[charLines.length - 1][0] <= label.end) {
+    if (charLines[charLines.length - 1][0] <= label.endIndex) {
         endLine = charLines.length - 1;
     } else {
         let left = 0;
         let right = charLines.length - 1;
         while (left < right - 1) {
             let mid = Math.floor((left + right)/2);
-            if (charLines[mid][0] > label.end) {
+            if (charLines[mid][0] > label.endIndex) {
                 right = mid;
             } else {
                 left = mid;
@@ -73,13 +76,13 @@ const getSegments = (label, charLines, charX, charWidth, props) => {
     }
 
     let segments = [];
-    let mid = Math.floor((label.start + label.end) /2);
+    let mid = Math.floor((label.startIndex + label.endIndex) /2);
     for (let i = startLine; i <= endLine; i++) {
         let seg = {};
         seg.belongsTo = label;
         seg.lineIndex = i;
-        seg.start = Math.max(label.start, charLines[i][0]);
-        seg.end = Math.min(label.end, charLines[i][1]);
+        seg.start = Math.max(label.startIndex, charLines[i][0]);
+        seg.end = Math.min(label.endIndex, charLines[i][1]);
         seg.leftBound = charX[seg.start];
         seg.rightBound = charX[seg.end] + charWidth[seg.end];
         if (seg.start <= mid && seg.end >= mid) {
@@ -114,9 +117,40 @@ const getLabelTagAndOffset = (
     lineStart,
     lineEnd,
 ) => {
+
+    let fontSize = parseInt(props.displaySettings.fontSize);
+    if (isNaN(fontSize)) {
+        fontSize = 30;
+    }
+    
+    let padding = parseInt(props.displaySettings.padding);
+    if (isNaN(padding)) {
+        padding = 30;
+    }
+
+    let charGap = parseInt(props.displaySettings.charGap);
+    if (isNaN(charGap)) {
+        charGap = 0;
+    }
+
+    let lineGap = parseInt(props.displaySettings.lineGap);
+    if (isNaN(lineGap)) {
+        lineGap = 20;
+    }
+
+    let labelFontSize = parseInt(props.displaySettings.labelFontSize);
+    if (isNaN(labelFontSize)) {
+        labelFontSize = 15;
+    }
+
+    let labelGap = parseInt(props.displaySettings.labelGap);
+    if (isNaN(labelGap)) {
+        labelGap = 6;
+    }
+
     let maxWidth = Math.round(0.125*props.canvasWidth);
     let ctx = document.createElement('canvas').getContext('2d');
-    ctx.font = props.labelFontSize + 'px ' + props.labelFontFamily;
+    ctx.font = labelFontSize + 'px ' + props.displaySettings.labelFontFamily;
     let tag = label.name;
     let tagWidth = ctx.measureText(label.name).width;
     if (tagWidth > maxWidth) {
@@ -126,18 +160,18 @@ const getLabelTagAndOffset = (
     // let midIndex = Math.floor((label.start + label.end) /2);
     // let midX = Math.round(charX[midIndex] + 0.5*charWidth[midIndex]);
     let preLen = 0;
-    for (let i = label.start; i < lineStart; i++) {
-        preLen += charWidth[i] + props.charGap;
+    for (let i = label.startIndex; i < lineStart; i++) {
+        preLen += charWidth[i] + charGap;
     }
     let postLen = 0;
-    for (let i = lineEnd + 1; i <= label.end; i++) {
-        postLen += charWidth[i] + props.charGap;
+    for (let i = lineEnd + 1; i <= label.endIndex; i++) {
+        postLen += charWidth[i] + charGap;
     }
     let midX = (charX[lineStart] + charX[lineEnd] + charWidth[lineEnd] + postLen - preLen)/2;
     let tagXOffset = Math.round(midX - 0.5*tagWidth);
-    tagXOffset = Math.max(props.padding, tagXOffset);
+    tagXOffset = Math.max(padding, tagXOffset);
     tagXOffset = Math.min(
-        Math.round(props.canvasWidth - props.padding - tagWidth), 
+        Math.round(props.canvasWidth - padding - tagWidth), 
         tagXOffset
     );
     return [tag, tagXOffset, tagWidth];
@@ -145,9 +179,40 @@ const getLabelTagAndOffset = (
 
 
 function getLabelTagContainer(label, ctx, props) {
-    ctx.font = props.labelFontSize + 'px ' + props.labelFontFamily;
+
+    let fontSize = parseInt(props.displaySettings.fontSize);
+    if (isNaN(fontSize)) {
+        fontSize = 30;
+    }
+    
+    let padding = parseInt(props.displaySettings.padding);
+    if (isNaN(padding)) {
+        padding = 30;
+    }
+
+    let charGap = parseInt(props.displaySettings.charGap);
+    if (isNaN(charGap)) {
+        charGap = 0;
+    }
+
+    let lineGap = parseInt(props.displaySettings.lineGap);
+    if (isNaN(lineGap)) {
+        lineGap = 20;
+    }
+
+    let labelFontSize = parseInt(props.displaySettings.labelFontSize);
+    if (isNaN(labelFontSize)) {
+        labelFontSize = 15;
+    }
+
+    let labelGap = parseInt(props.displaySettings.labelGap);
+    if (isNaN(labelGap)) {
+        labelGap = 6;
+    }
+
+    ctx.font = labelFontSize + 'px ' + props.displaySettings.labelFontFamily;
     let width = ctx.measureText(label.tagInfo[0]).width;
-    let height = props.labelFontSize;
+    let height = labelFontSize;
     let top = (label.tagInfo[2] - height);
     let left = (label.tagInfo[1]);
 

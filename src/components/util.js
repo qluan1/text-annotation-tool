@@ -50,6 +50,81 @@ function getViewport() {
     return [viewPortWidth, viewPortHeight];
 }
 
+function handleMouseEdgeScrollOnElement(event, target, edge, step, timer) {
+    let vpX = event.clientX;
+    let vpY = event.clientY;
+    let bdb = target.getBoundingClientRect();
+    
+    let isInLeftEdge = (vpX < bdb.left + edge);
+    let isInTopEdge = (vpY < bdb.top + edge);
+    let isInRightEdge = (vpX > bdb.right - edge);
+    let isInBottomEdge = (vpY > bdb.bottom - edge);
+
+    if ( ! ( isInLeftEdge || isInRightEdge || isInTopEdge || isInBottomEdge ) ) {
+
+        clearTimeout( timer );
+        return;
+  
+    }
+    
+    let targetWidth = Math.max(
+        target.scrollWidth,
+        target.offsetWidth,
+        target.clientWidth
+    );
+
+    let targetHeight = Math.max(
+        target.scrollHeight,
+        target.offsetHeight,
+        target.clientHeight
+    );
+
+    let maxScrollX = Math.round( targetWidth - bdb.right + bdb.left );
+    let maxScrollY = Math.round( targetHeight - bdb.bottom + bdb.top );
+    
+    (function checkForElementScroll() {
+        clearTimeout( timer );
+        if ( adjustElementScroll() ) {
+            timer = setTimeout( checkForElementScroll, 50 );
+        }
+  
+    })();    
+
+    function adjustElementScroll() {
+        let currentScrollX = target.scrollLeft;
+        let currentScrollY = target.scrollTop;
+
+        let canScrollUp = (currentScrollY > 0);
+        let canScrollDown = (currentScrollY < maxScrollY);
+        let canScrollLeft = (currentScrollX > 0);
+        let canScrollRight = (currentScrollX < maxScrollX);
+
+        let nextScrollX = currentScrollX;
+        let nextScrollY = currentScrollY;
+
+        nextScrollX = (isInLeftEdge && canScrollLeft)? nextScrollX - step: nextScrollX;
+        nextScrollX = (isInRightEdge && canScrollRight)? nextScrollX + step: nextScrollX;
+        nextScrollY = (isInTopEdge && canScrollUp)? nextScrollY - step: nextScrollY;
+        nextScrollY = (isInBottomEdge && canScrollDown)? nextScrollY + step: nextScrollY;
+
+        nextScrollX = Math.max( 0, Math.min( maxScrollX, nextScrollX ) ); // sanity check
+        nextScrollY = Math.max( 0, Math.min( maxScrollY, nextScrollY ) );
+
+        if (
+            ( nextScrollX !== currentScrollX ) ||
+            ( nextScrollY !== currentScrollY )
+            ) {
+
+            target.scrollTo( nextScrollX, nextScrollY );
+            return( true );
+
+        } else {
+            return( false );
+        }              
+    }
+}
+
+
 function handleMouseEdgeScroll(event, edge, step, timer) {
   let vpX = event.clientX;
   let vpY = event.clientY;
@@ -105,40 +180,40 @@ function handleMouseEdgeScroll(event, edge, step, timer) {
 
   })();
 
-  function adjustWindowScroll() {
-      let currentScrollX = window.pageXOffset;
-      let currentScrollY = window.pageYOffset;
+    function adjustWindowScroll() {
+        let currentScrollX = window.pageXOffset;
+        let currentScrollY = window.pageYOffset;
 
-      let canScrollUp = (currentScrollY > 0);
-      let canScrollDown = (currentScrollY < maxScrollY);
-      let canScrollLeft = (currentScrollX > 0);
-      let canScrollRight = (currentScrollX < maxScrollX);
+        let canScrollUp = (currentScrollY > 0);
+        let canScrollDown = (currentScrollY < maxScrollY);
+        let canScrollLeft = (currentScrollX > 0);
+        let canScrollRight = (currentScrollX < maxScrollX);
 
-      let nextScrollX = currentScrollX;
-      let nextScrollY = currentScrollY;
+        let nextScrollX = currentScrollX;
+        let nextScrollY = currentScrollY;
 
-      nextScrollX = (isInLeftEdge && canScrollLeft)? nextScrollX - step: nextScrollX;
-      nextScrollX = (isInRightEdge && canScrollRight)? nextScrollX + step: nextScrollX;
-      nextScrollY = (isInTopEdge && canScrollUp)? nextScrollY - step: nextScrollY;
-      nextScrollY = (isInBottomEdge && canScrollDown)? nextScrollY + step: nextScrollY;
+        nextScrollX = (isInLeftEdge && canScrollLeft)? nextScrollX - step: nextScrollX;
+        nextScrollX = (isInRightEdge && canScrollRight)? nextScrollX + step: nextScrollX;
+        nextScrollY = (isInTopEdge && canScrollUp)? nextScrollY - step: nextScrollY;
+        nextScrollY = (isInBottomEdge && canScrollDown)? nextScrollY + step: nextScrollY;
 
-      nextScrollX = Math.max( 0, Math.min( maxScrollX, nextScrollX ) ); // sanity check
-      nextScrollY = Math.max( 0, Math.min( maxScrollY, nextScrollY ) );
+        nextScrollX = Math.max( 0, Math.min( maxScrollX, nextScrollX ) ); // sanity check
+        nextScrollY = Math.max( 0, Math.min( maxScrollY, nextScrollY ) );
 
-      if (
-          ( nextScrollX !== currentScrollX ) ||
-          ( nextScrollY !== currentScrollY )
-          ) {
+        if (
+            ( nextScrollX !== currentScrollX ) ||
+            ( nextScrollY !== currentScrollY )
+            ) {
 
-          window.scrollTo( nextScrollX, nextScrollY );
-          return( true );
+            window.scrollTo( nextScrollX, nextScrollY );
+            return( true );
 
-      } else {
+        } else {
 
-          return( false );
+            return( false );
 
-      }            
-  }
+        }            
+    }
 }
 
 function useStateRef(initVal) {
@@ -148,10 +223,26 @@ function useStateRef(initVal) {
   return [val, setVal, valRef];
 }
 
+
+function copyDisplaySettings(ds) {
+    let nds = {};
+    nds.fontSize = ds.fontSize;
+    nds.fontFamily = ds.fontFamily;
+    nds.padding = ds.padding;
+    nds.charGap = ds.charGap;
+    nds.lineGap = ds.lineGap;
+    nds.labelFontSize = ds.labelFontSize;
+    nds.labelFontFamily = ds.labelFontFamily;
+    nds.labelGap = ds.labelGap;
+    return nds;
+}
+
 export {
   getPixelRate, 
   initializeHiPPICanvasProps, 
   getViewport, 
   handleMouseEdgeScroll,
-  useStateRef
+  handleMouseEdgeScrollOnElement,
+  useStateRef,
+  copyDisplaySettings
 };

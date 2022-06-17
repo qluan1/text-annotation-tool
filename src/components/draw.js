@@ -33,16 +33,16 @@ function drawText(
     charY,
 ) {
     if (
-        props.str === undefined || 
-        typeof(props.str) != typeof('string') || 
-        props.str.length === 0
+        props.task.context === undefined || 
+        typeof(props.task.context) != typeof('string') || 
+        props.task.context.length === 0
     ) {
         return;
     }
-    context.font = props.fontSize + 'px ' + props.fontFamily;
+    context.font = props.displaySettings.fontSize + 'px ' + props.displaySettings.fontFamily;
     context.fillStyle = 'rgb(0, 0, 0)';
-    for (let i = 0; i < props.str.length; i++) {
-        context.fillText(props.str.charAt(i), charX[i], charY[i]);
+    for (let i = 0; i < props.task.context.length; i++) {
+        context.fillText(props.task.context.charAt(i), charX[i], charY[i]);
     }
 }
 
@@ -52,7 +52,7 @@ function drawLabel(
     instructions,
     props
 ) {
-    context.font = props.labelFontSize + 'px ' + props.labelFontFamily;
+    context.font = props.displaySettings.labelFontSize + 'px ' + props.displaySettings.labelFontFamily;
     for (let l of instructions ) {
         let xStart = l[0];
         let yStart = l[1];

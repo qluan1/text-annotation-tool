@@ -7,9 +7,10 @@
 }
 
 #confirm-dialog {
-    margin: 30vh auto;
+    margin: 20vh auto;
     width: 600px;
-    height: 300px;
+    max-height: 60vh;
+    overflow: auto;
     border-radius: 15px;
     background-color: white;
     color: black;

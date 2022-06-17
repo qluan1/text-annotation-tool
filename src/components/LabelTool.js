@@ -1,25 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
 
-const templateToButton = (t) => {
-    let bgc = {};
-    bgc.backgroundColor = (
-        (t.textColor === undefined)? 
-        'rgb(125, 125, 125)': t.textColor
-    );
-    return (
-        <div 
-            className = 'label-option' 
-            id = {'label-option-'+t.name}
-            key = {t.name}
-        >
-            <div className = 'label-option-color' style = {bgc}></div>
-            <div className = 'label-option-name'>
-                {t.name}
-            </div>
-        </div>
-    );
-}
-
 function LabelTool(props) {
 
     const labelToolRef = useRef(null);
@@ -123,25 +103,44 @@ function getLabelToolPosition(
     const toolWidth = 200;
     let top;
     let left;
-    if (x + toolWidth < props.canvasWidth - props.padding) {
+    if (x + toolWidth < props.canvasWidth - props.displaySettings.padding) {
         left = x;
-        top = y - props.fontSize - toolHeight;
-        if (top < 0 + props.padding) {
+        top = y - props.displaySettings.fontSize - toolHeight;
+        if (top < 0 + props.displaySettings.padding) {
             top = y;
         }
     } else {
         left = backupX - toolWidth;
-        if (left < 0 + props.padding) {
-            left = props.padding;
+        if (left < 0 + props.displaySettings.padding) {
+            left = props.displaySettings.padding;
         }
         top = backupY;
-        if (top + toolHeight > height - props.padding) {
-            top = y - props.fontSize - toolHeight;
+        if (top + toolHeight > height - props.displaySettings.padding) {
+            top = y - props.displaySettings.fontSize - toolHeight;
         }
     }
     return [top, left];
 }
 
+const templateToButton = (t) => {
+    let bgc = {};
+    bgc.backgroundColor = (
+        (t.textColor === undefined)? 
+        'rgb(125, 125, 125)': t.textColor
+    );
+    return (
+        <div 
+            className = 'label-option' 
+            id = {'label-option-'+t.name}
+            key = {t.name}
+        >
+            <div className = 'label-option-color' style = {bgc}></div>
+            <div className = 'label-option-name'>
+                {t.name}
+            </div>
+        </div>
+    );
+}
 
 
 export default LabelTool;

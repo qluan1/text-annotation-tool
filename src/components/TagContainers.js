@@ -34,8 +34,8 @@ function TagContainers(props) {
 
         tagCon.push((
             <div
-                id = {'label-tag-' + l.name + ',' + l.start.toString() + ',' + l.end.toString()}
-                key = {'label-tag-' + l.name + ',' + l.start.toString() + ',' + l.end.toString()}
+                id = {'label-tag-' + l.name + ',' + l.startIndex.toString() + ',' + l.endIndex.toString()}
+                key = {'label-tag-' + l.name + ',' + l.startIndex.toString() + ',' + l.endIndex.toString()}
                 style = {conStyle}
             >
             </div>
@@ -43,8 +43,8 @@ function TagContainers(props) {
 
         mouseEnterListeners.push(() => {
             let hoveredLabel = {};
-            hoveredLabel.start = l.start;
-            hoveredLabel.end = l.end;
+            hoveredLabel.start = l.startIndex;
+            hoveredLabel.end = l.endIndex;
             hoveredLabel.textColor = l.textColor;
             setMouseHoverLabel(hoveredLabel);
         });
@@ -54,11 +54,24 @@ function TagContainers(props) {
         mouseClickListeners.push(() => {
             let dialogProps = {};
             dialogProps.title = 'Do you want to delete this label?';
-            dialogProps.content = ( 
-                props.str.substring(l.start, l.end+1) + 
-                ' is labeled as ' + l.name + '.' 
+            let styleText = {};
+            styleText.color = 'grey';
+            let styleLabel = {};
+            styleLabel.color = l.textColor;
+
+            dialogProps.content = (
+                <div>
+                    <span style = {styleText} >
+                        {props.context.substring(l.startIndex, l.endIndex+1)}
+                    </span>
+                    {" is labeled as "}
+                    <span style = {styleLabel}>
+                        {l.name}
+                    </span>
+                </div>
             );
-            dialogProps.onConfirm = deleteLabel.bind(null, l.name, l.start, l.end);
+            let tempLabel = {name: l.name, startIndex: l.startIndex, endIndex: l.endIndex};
+            dialogProps.onConfirm = deleteLabel.bind(null, tempLabel);
             dialogProps.isActive = true;
             //deleteLabel(l.name, l.start, l.end);
             props.popConfDial(dialogProps);
@@ -69,7 +82,7 @@ function TagContainers(props) {
         for (let i = 0; i < initializedLabels.length; i++) {
             let container = document.getElementById(
                 'label-tag-' + initializedLabels[i].name + 
-                ',' + initializedLabels[i].start.toString() + ',' + initializedLabels[i].end.toString()
+                ',' + initializedLabels[i].startIndex.toString() + ',' + initializedLabels[i].endIndex.toString()
             );
             container.addEventListener('mouseenter', mouseEnterListeners[i]);
             container.addEventListener('mouseleave', mouseLeaveListeners[i]);

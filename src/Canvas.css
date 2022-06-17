@@ -1,6 +1,8 @@
 .canvas-container {
     position:relative;
     display: inline-block;
+    max-height: 100vh;
+    overflow: auto;
 }
 
 canvas {
