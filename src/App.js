@@ -1,24 +1,13 @@
-// 'RGB(224, 58, 31)',
-// 'RGB(225, 128, 1)',
-// 'RGB(255, 200, 37)',
-// 'RGB(145, 179, 77)',
-// 'RGB(77, 179, 77)',
-// 'RGB(52, 204, 152)',
-// 'RGB(52, 153, 203)',
-// 'RGB(51, 51, 204)',
-// 'RGB(112, 52, 203)',
-// 'RGB(153, 51, 204)',
-// 'RGB(204, 50, 152)'
-
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import ReactDOM from 'react-dom/client';
 import Canvas from './components/Canvas';
 import './App.css';
 import Sidebar from './components/Sidebar';
-import { getViewport, useStateRef } from './components/util';
+import { getViewport, useStateRef, popAlert } from './components/util';
 import ConfirmDialog from './components/ConfirmDialog';
 import { combineContextLabel } from './components/writeToFile';
 import { 
+    parseData,
     getDataFromFile, 
     addLabel, 
     deleteLabel, 
@@ -26,6 +15,7 @@ import {
     getTaskTotal, 
     outputDataStr
 } from './components/data';
+import sampleInput from '../examples/sampleInputFile.json';
 
 const defaultDisplaySettings = {
     fontSize: 30,
@@ -40,10 +30,23 @@ const defaultDisplaySettings = {
 
 const sidebarWidth = 350;
 
+const initialData =   (function (){
+    let initialData;
+    try {
+        initialData = parseData(sampleInput);
+    } catch (e) {
+        console.log(e);
+        console.log('sample data is not loaded.');
+        initialData = {error: 'No Data Uploaded'};
+    }
+    return initialData;
+})();
+
 function App () {
     // Html Element Related Variables and Functions
     let [vpw, vph] = getViewport();
 
+    // hooks
     let [canvasWidth, setCanvasWidth] = useState(
         (vpw >=1000)?
         vpw-sidebarWidth:
@@ -53,14 +56,17 @@ function App () {
     let [scrollMem, setScrollMem] = useState({left: 0, top: 0});
     let [confDialProps, setConfDialProps] = useState({isActive: false});
     let [drawState, setDrawState, drawStateRef] = useStateRef(true);
-    let [data, setData, dataRef] = useStateRef({error: 'No Data Uploaded'});
-    let [currentTaskIndex, setCurrentTaskIndex] = useState(null);
-    
+    let dataRef = useRef(initialData);
+    let [currentTaskIndex, setCurrentTaskIndex] = useState(0);
+
+    // function to navigate between tasks
     const goToTaskByIndex = (i) => {
         if (
             i >= 0 &&
-            i < getTaskTotal(dataRef.current)
+            i < getTaskTotal(dataRef.current) &&
+            i !== currentTaskIndex
         ) {
+            handleScroll();
             setCurrentTaskIndex(i);
             setDrawState(!drawStateRef.current);
         }
@@ -68,16 +74,28 @@ function App () {
 
     const addLabelToTaskByIndex = (i, label) => {
         let d = dataRef.current;
-        addLabel(d, i, label);
-        setData(d);
+
+        let message = addLabel(d, i, label);
+        if (message !== null) {
+            popAlert('CANNOT ADD LABEL', message);
+        }
+        
+        handleScroll();
         setDrawState(!drawStateRef.current);
+        return message === null;
     };
 
     const deleteLabelFromTaskByIndex = (i, label) => {
         let d = dataRef.current;
-        deleteLabel(d, i, label);
-        setData(d);
+
+        let message = deleteLabel(d, i, label);
+        if (message !== null) {
+            popAlert('CANNOT DELETE LABEL', message);
+        }
+
+        handleScroll();
         setDrawState(!drawStateRef.current);
+        return message === null;
     };
 
     const handleWindowResize = () => {
@@ -90,9 +108,22 @@ function App () {
         setDrawState(!drawStateRef.current);
     }
 
+    // memorizes the sroll position of the canvas-container
+    // such that when Canvas element re-render 
+    // it stays on the position
+    const handleScroll = (e) => {
+        let container = document.querySelector('.canvas-container');
+        if (container !== null) {
+            setScrollMem({
+                left: container.scrollLeft,
+                top: container.scrollTop
+            });
+        }
+    };
+
     const loadData = getDataFromFile.bind(
         null, 
-        setData, 
+        dataRef, 
         setCurrentTaskIndex, 
         drawStateRef, 
         setDrawState
@@ -155,6 +186,7 @@ function App () {
                 setScrollMem = {setScrollMem}
                 addLabel = {addLabelToTaskByIndex.bind(null, currentTaskIndex)}
                 deleteLabel = {deleteLabelFromTaskByIndex.bind(null, currentTaskIndex)}
+                handleScroll = {handleScroll}
                 popConfDial = { (p) => {
                     setConfDialProps(p);
                     setDrawState(!drawStateRef.current);

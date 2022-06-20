@@ -74,6 +74,7 @@ function TagContainers(props) {
             dialogProps.onConfirm = deleteLabel.bind(null, tempLabel);
             dialogProps.isActive = true;
             //deleteLabel(l.name, l.start, l.end);
+            props.handleScroll();
             props.popConfDial(dialogProps);
         })
     });

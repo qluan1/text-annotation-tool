@@ -60,8 +60,6 @@ const Canvas = (props) => {
         charY[charY.length - 1] + props.displaySettings.padding
     );
     
-
-    //let [mousePos, setMousePos] = useState({X:0, Y:0});
     let [isMouseDown, setIsMouseDown, isMouseDownRef] = useStateRef(false);
     let [mouseDownPos, setMouseDownPos, mouseDownPosRef] = useStateRef({X:0, Y:0});
     let [select, setSelect, selectRef] = useStateRef({start:null, end:null});
@@ -103,17 +101,6 @@ const Canvas = (props) => {
         props,
         height
     );
-
-    // memorizes the sroll position of the canvas-container
-    // such that when Canvas element re-render 
-    // it stays on the position
-    const handleScroll = (e) => {
-        let container = document.querySelector('.canvas-container');
-        props.setScrollMem({
-            left: container.scrollLeft,
-            top: container.scrollTop
-        });
-    }; 
 
     const addLabel = (labelName, textColor) => {
         if (
@@ -180,13 +167,11 @@ const Canvas = (props) => {
         document.addEventListener('mousedown', handleMouseDown);
         document.addEventListener('mouseup', handleMouseUp);
         document.addEventListener('mousemove', handleMouseMove);
-        container.addEventListener('scroll', handleScroll);
 
         return (() => {
             document.removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('mousedown', handleMouseDown);
             document.removeEventListener('mouseup', handleMouseUp);
-            container.removeEventListener('scroll', handleScroll);
         });
     }, []);
 
@@ -277,6 +262,7 @@ const Canvas = (props) => {
                     setMouseHoverLabel = {setMouseHoverLabel}
                     deleteLabel = {props.deleteLabel}
                     popConfDial = {props.popConfDial}
+                    handleScroll = {props.handleScroll}
                 />
                 <LabelTool
                     templates = {(props.labelTemplates === undefined)?[]:props.labelTemplates} 

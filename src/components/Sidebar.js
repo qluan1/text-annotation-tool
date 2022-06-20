@@ -60,7 +60,7 @@ function Sidebar (props) {
                         htmlFor='input-data-file' 
                         className = 'file-inoutput-label'
                 >
-                        <img src = {addFileIcon}/>
+                        <img src = {addFileIcon} alt = "Upload"/>
                         <span>Upload</span>
                         <input 
                             id="input-data-file" 
@@ -90,7 +90,7 @@ function Sidebar (props) {
 
                     }}
                 >
-                    <img src = {prepFileIcon}/>
+                    <img src = {prepFileIcon} alt = "Write"/>
                     <span>Write File</span>   
                 </div>
 
@@ -105,7 +105,7 @@ function Sidebar (props) {
                         getFileLinkRef.current.style.display = 'flex';                       
                     }}
                 >
-                    <img src = {downloadIcon}/>
+                    <img src = {downloadIcon} alt ="Download"/>
                     <span>Download</span>
                 </a>
 
@@ -122,7 +122,7 @@ function Sidebar (props) {
                     <span>
                         {
                             'Task: ' +
-                            inputTask.toString() +
+                            (props.currentTaskIndex+1).toString() +
                             ' of ' +
                             totalTaskNumber.toString()
                         }

@@ -44,6 +44,7 @@ function mouseDown(
     setMouseDownPos,
     e
 ) {
+    
     if (e.target != canvasRef.current) return;
     setIsMouseDown(true);
     setSelect({start:null, end:null});

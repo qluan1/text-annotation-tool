@@ -1,0 +1,143 @@
+{
+    "labelTemplates": [
+        {
+            "name": "PERSON",
+            "textColor": "RGB(225, 128, 1)"
+        },
+        {
+            "name": "LOCATION",
+            "textColor": "RGB(145, 179, 77)"
+        },
+        {
+            "name": "TIME",
+            "textColor": "RGB(52, 204, 152)"
+        },
+        {
+            "name": "ORG",
+            "textColor": "RGB(153, 51, 204)"
+        },
+        {
+            "name": "GPE",
+            "textColor": "RGB(204, 50, 152)"
+        }
+    ],
+    "tasks": [
+        {
+            "id": "example_input_0",
+            "context": "The Austro-Hungarian Compromise of 1867 established the Dual Monarchy of Austria-Hungary (also known as the Austro-Hungarian Empire). The two parts of the empire were united by a common ruler, by a joint foreign policy, and, to some extent, by shared finances. Otherwise, Austria and Hungary were virtually independent states, each having its own parliament, government, administration, and judicial system. Despite a series of crises, this dual system survived until 1918. It made permanent the dominant positions of the Hungarians in Hungary and of the Germans in the Austrian parts of the monarchy. Although both halves of the empire had parliamentary systems, in the Austrian half a series of franchise reforms, culminating in universal manhood suffrage in 1907, allowed the Czechs to play an increasingly active role in the political life of Austria. In the last decades before 1914 a succession of governments included a number of non-German ministers and even one Polish Minister-President, but Austria's Germans dominated political power at the imperial level until the end of the state. At the local level the various nationalities gained a great deal of control over provincial and municipal affairs after a series of reforms in local government in the 1860s and 1870s. The monarchy's inability or unwillingness to come to terms with its nationalities problems weakened the parliamentary system at a time of escalating international crises.",
+            "strLan": "ENG",
+            "labels": [
+                {
+                    "name": "TIME",
+                    "startIndex": 35,
+                    "endIndex": 38,
+                    "text": "1867"
+                },
+                {
+                    "name": "GPE",
+                    "startIndex": 56,
+                    "endIndex": 87,
+                    "text": "Dual Monarchy of Austria-Hungary"
+                },
+                {
+                    "name": "GPE",
+                    "startIndex": 108,
+                    "endIndex": 130,
+                    "text": "Austro-Hungarian Empire"
+                },
+                {
+                    "name": "TIME",
+                    "startIndex": 468,
+                    "endIndex": 471,
+                    "text": "1918"
+                },
+                {
+                    "name": "GPE",
+                    "startIndex": 272,
+                    "endIndex": 278,
+                    "text": "Austria"
+                },
+                {
+                    "name": "GPE",
+                    "startIndex": 284,
+                    "endIndex": 290,
+                    "text": "Hungary"
+                }
+            ]
+        },
+        {
+            "id": "example_input_1",
+            "context": "The Long Absence (French: Une aussi longue absence, \"Such a long absence\") is a 1961 French film directed by Henri Colpi. It tells the story of Therese (Alida Valli), a Puteaux café owner mourning the mysterious disappearance of her husband sixteen years earlier. A tramp arrives in the town and she believes him to be her husband. But he is suffering from amnesia and she tries to bring back his memory of earlier times.",
+            "strLan": "ENG",
+            "labels": [
+                {
+                    "name": "TIME",
+                    "startIndex": 80,
+                    "endIndex": 83,
+                    "text": "1961"
+                },
+                {
+                    "name": "PERSON",
+                    "startIndex": 109,
+                    "endIndex": 119,
+                    "text": "Henri Colpi"
+                },
+                {
+                    "name": "PERSON",
+                    "startIndex": 144,
+                    "endIndex": 150,
+                    "text": "Therese"
+                },
+                {
+                    "name": "PERSON",
+                    "startIndex": 153,
+                    "endIndex": 163,
+                    "text": "Alida Valli"
+                },
+                {
+                    "name": "GPE",
+                    "startIndex": 169,
+                    "endIndex": 175,
+                    "text": "Puteaux"
+                },
+                {
+                    "name": "LOCATION",
+                    "startIndex": 287,
+                    "endIndex": 290,
+                    "text": "town"
+                }
+            ]
+        },
+        {
+            "id": "example_input_2",
+            "context": "The Hunting of the Snark is a nonsense poem by the English writer Lewis Carroll, telling the story of ten characters who cross the ocean to hunt a mysterious creature known as the Snark. The poem was published in 1876 with illustrations by Henry Holiday. ",
+            "strLan": "ENG",
+            "labels": [
+                {
+                    "name": "PERSON",
+                    "startIndex": 66,
+                    "endIndex": 78,
+                    "text": "Lewis Carroll"
+                },
+                {
+                    "name": "LOCATION",
+                    "startIndex": 131,
+                    "endIndex": 135,
+                    "text": "ocean"
+                },
+                {
+                    "name": "TIME",
+                    "startIndex": 213,
+                    "endIndex": 216,
+                    "text": "1876"
+                },
+                {
+                    "name": "PERSON",
+                    "startIndex": 240,
+                    "endIndex": 252,
+                    "text": "Henry Holiday"
+                }
+            ]
+        }
+    ]
+}

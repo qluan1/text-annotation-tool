@@ -1,5 +1,8 @@
-function getDataFromFile(setData, setTaskIndex, drawStateRef, setDrawState, input) {
-    // return 
+function getDataFromFile(dataRef, setTaskIndex, drawStateRef, setDrawState, input) {
+    // read data from file
+    // parse data 
+    // then supply data to application
+
     let file = input.files[0];
     let reader = new FileReader();
     reader.readAsText(file);
@@ -16,7 +19,8 @@ function getDataFromFile(setData, setTaskIndex, drawStateRef, setDrawState, inpu
         } catch (e) {
             data = {error: 'Encountered an error while parsing as Annotation Tasks'}
         }
-        setData(data);
+        //setData(data);
+        dataRef.current = data;
         setTaskIndex(0);
         setDrawState(!drawStateRef.current);
     }
@@ -165,6 +169,10 @@ function copyTask(task, templates) {
                 copy.labels.push(copiedLabel);
             }
         });
+    }
+
+    if (task.strLan !== undefined){
+        copy.strLan = task.strLan;
     }
 
     return [true, copy];
@@ -319,7 +327,6 @@ function addLabel (data, taskIndex, label) {
     let [canAdd, message] = canAddLabel(data, taskIndex, label);
     if (canAdd === true) {
         data.tasks[taskIndex].labels.push(label);
-        return 'successfully added label';
     }
     return message;
 }
@@ -335,35 +342,35 @@ function canDeleteLabel (data, taskIndex, label) {
 
     let task = data.tasks[taskIndex];
     let lArray = task.labels;
-    let lIndex;
     for (let i = 0; i < lArray.length; i++) {
         let l = lArray[i];
         if (
             l.name === label.name &&
             l.startIndex === label.startIndex &&
-            l.endIndex === label.endIndex &&
-            !(
-                l.canEdit !== undefined &&
-                l.canEdit === false
-            )
+            l.endIndex === label.endIndex
         ){
-            lIndex = i;
+            if (
+                l.canEdit !== undefined &&
+                l.canEdit === false 
+            ) {
+                return [false, 'Attempted to delete a label that is flagged as uneditable'];
+            }
+            return [true, i];
         }
     }
-
-    if (lIndex === undefined) {
-        return [false, null];
-    }
-    return [true, lIndex];
+    return [false, 'Label not found. This should be a bug.'];
 }
 
 function deleteLabel (data, taskIndex, label) {
-    let [canDelete, lIndex] = canDeleteLabel(data, taskIndex, label);
+    let [canDelete, m] = canDeleteLabel(data, taskIndex, label);
+    // if the label can be deleted,
+    // m will be the index of the label
+    // else m will be a message on why the label cannot be deleted
     if (canDelete) {
-        data.tasks[taskIndex].labels.splice(lIndex, 1);
-        return true;        
+        data.tasks[taskIndex].labels.splice(m, 1);
+        return null;        
     }
-    return false;
+    return m;
 }
 
 
@@ -389,6 +396,9 @@ function outputDataStr (data) {
         let taskCopy = {};
         taskCopy.id = task.id;
         taskCopy.context = task.context;
+        if (task.strLan !== undefined) {
+            taskCopy.strLan = task.strLan;
+        }
         taskCopy.labels = [];
         task.labels.forEach((l) => {
             let [isValid, copy] = copyLabelForOutput(l, task.context, data.labelTemplates);
@@ -457,4 +467,4 @@ function copyLabelForOutput(label, context, labelTemplates) {
     return [true, copy];    
 }
 
-export { getDataFromFile, addLabel, deleteLabel, getTaskByIndex, getTaskTotal, outputDataStr };
+export { getDataFromFile, addLabel, deleteLabel, getTaskByIndex, getTaskTotal, outputDataStr, parseData, copyTask };

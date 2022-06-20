@@ -168,7 +168,7 @@ function handleMouseEdgeScroll(event, edge, step, timer) {
   let maxScrollX = ( documentWidth - vpw );
   let maxScrollY = ( documentHeight - vph );
 
-  (function checkForWindowScroll() {
+    (function checkForWindowScroll() {
 
       clearTimeout( timer );
 
@@ -237,6 +237,54 @@ function copyDisplaySettings(ds) {
     return nds;
 }
 
+function popAlert(title, message) {
+    let abg = document.createElement('div');
+    abg.classList.add('alert-dialog-background');
+    abg.style.position = 'fixed';
+    abg.style.height = '100vh';
+    abg.style.width = '100vw';
+    abg.style.top = '0';
+    abg.style.left = '0';
+    abg.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    abg.style.zIndex = '11';
+
+    let diag = document.createElement('div');
+    diag.classList.add('alert-dialog');
+
+    let diagTitle = document.createElement('div');
+    diagTitle.classList.add('alert-dialog-title');
+    diagTitle.textContent = title;
+
+    let diagMessage = document.createElement('p');
+    diagMessage.classList.add('alert-dialog-message');
+    diagMessage.textContent = message;
+
+    let diagButton = document.createElement('button');
+    diagButton.classList.add('alert-dialog-button');
+    diagButton.textContent = 'Confirm';
+    
+    diag.appendChild(diagTitle);
+    diag.appendChild(diagMessage);
+    diag.appendChild(diagButton);
+    abg.appendChild(diag);
+    document.body.append(abg);
+    document.body.classList.add('lock');
+
+    const removeAlert = () => {
+        document.body.classList.remove('lock');
+        document.body.removeChild(abg);
+        abg.removeEventListener('click', handleAlertRemove);
+    }
+    diagButton.onclick = removeAlert;
+    
+    const handleAlertRemove = (e) => {
+        if (e.target != abg) return;
+        removeAlert();
+    }
+    abg.addEventListener('click', handleAlertRemove);
+
+}
+
 export {
   getPixelRate, 
   initializeHiPPICanvasProps, 
@@ -244,5 +292,6 @@ export {
   handleMouseEdgeScroll,
   handleMouseEdgeScrollOnElement,
   useStateRef,
-  copyDisplaySettings
+  copyDisplaySettings,
+  popAlert
 };

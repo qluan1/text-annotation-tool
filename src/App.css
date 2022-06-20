@@ -1,3 +1,17 @@
+/*
+// 'RGB(224, 58, 31)',
+// 'RGB(225, 128, 1)',
+// 'RGB(255, 200, 37)',
+// 'RGB(145, 179, 77)',
+// 'RGB(77, 179, 77)',
+// 'RGB(52, 204, 152)',
+// 'RGB(52, 153, 203)',
+// 'RGB(51, 51, 204)',
+// 'RGB(112, 52, 203)',
+// 'RGB(153, 51, 204)',
+// 'RGB(204, 50, 152)'
+*/
+
 * {
     margin: 0;
     padding: 0;
@@ -79,6 +93,61 @@ body.lock {
     top: 0;
     transform: rotate(90deg);
 }
+
+
+.alert-dialog-background {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 11;
+}
+
+.alert-dialog {
+    width: 40vw;
+    margin: 20vh auto;
+    padding: 50px;
+    border-radius: 15px;
+    background-color: white;
+    color: #2e3047;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.alert-dialog-title {
+    font-size: larger;
+    font-weight: 700;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.alert-dialog-message {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.alert-dialog-button {
+    display: block;
+    margin: 20px auto;
+    width: 100px;
+    height: 40px;
+    margin-top: 50px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: RGB(224, 58, 31);
+    color: white;
+    border: none;
+    outline: none;
+}
+
+.alert-dialog-button:hover {
+    background-color: white;
+    color: RGB(224, 58, 31);
+    transition: 0.2s;
+    border: solid 1px  RGB(224, 58, 31);
+}
+
 
 @media (max-width: 1000px) {
     .menu-toggle {

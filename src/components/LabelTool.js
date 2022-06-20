@@ -9,32 +9,11 @@ function LabelTool(props) {
     const toolWidth = 200;
     let [userFilter, setUserFilter] = useState('');
     
-    const handleAdd = (name, color) => {
+    const handleAdd = (name, color, e) => {
         if (props.addLabel(name, color)) {
             props.removeLabelTool();
         }
     };
-
-    useEffect( () => {
-        let listeners = [];
-        for (let i = 0; i < props.templates.length; i++) {
-            let t = props.templates[i];
-            let q = '#label-option-' + t.name;
-            let listener = handleAdd.bind(null, t.name, t.textColor);
-            listeners.push(listener);
-            document.querySelector(q).addEventListener('click', listener);      
-        }
-        return (() => {
-            for (let i = 0; i < props.templates.length; i++) {
-                let t = props.templates[i];
-                let q = '#label-option-' + t.name;
-                let ele = document.querySelector(q);
-                if (ele !== null) {
-                    removeEventListener('click', listeners[i]);
-                }    
-            }            
-        });
-    }, []);
 
     useEffect(() => {
         for (let i = 0; i < props.templates.length; i++) {
@@ -81,14 +60,17 @@ function LabelTool(props) {
                 }
             />
             <div className="label-buttons">
-                {props.templates.map(templateToButton)}
+                {props.templates.map( (t) => {
+                    return templateToButton(t, handleAdd.bind(null, t.name, t.textColor));
+                })}
             </div>
         </div>
     );
 }
 
-        //   label tool
-        //   (x, y) anchor point
+
+//   label tool
+//   (x, y) anchor point
 
 function getLabelToolPosition(
     props,
@@ -122,7 +104,7 @@ function getLabelToolPosition(
     return [top, left];
 }
 
-const templateToButton = (t) => {
+const templateToButton = (t, clickHandler) => {
     let bgc = {};
     bgc.backgroundColor = (
         (t.textColor === undefined)? 
@@ -133,6 +115,7 @@ const templateToButton = (t) => {
             className = 'label-option' 
             id = {'label-option-'+t.name}
             key = {t.name}
+            onClick = {clickHandler}
         >
             <div className = 'label-option-color' style = {bgc}></div>
             <div className = 'label-option-name'>

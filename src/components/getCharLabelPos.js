@@ -8,7 +8,7 @@ function parseStrLines(props) {
     let charWidth = Array(str.length);
     let charLines = [];
 
-    if (props.strLan === 'ENG') {
+    if (props.task.strLan === 'ENG') {
         parseEngLines(props, charX, charWidth, charLines);
     } else {
         parseNoneEngLines(props, charX, charWidth, charLines);
@@ -67,16 +67,6 @@ function getCharLabelPos(
 
     for (let label of labels) {
         for (let segment of label.segments) {
-            // let s = [];
-            // s.push(segment.leftBound);
-            // s.push(segment.rightBound);
-            // s.push(segment.start);
-            // s.push(segment.end);
-            // s.push(label.textColor);
-            // if (segment.tag != undefined) {
-            //     s.push(segment.tag);
-            //     s.push(segment.tagXOffset);
-            // }
             fitSegment(segment, lines[segment.lineIndex]);
         }
     }
