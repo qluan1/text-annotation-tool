@@ -7,18 +7,16 @@
   <!-- <a href="https://github.com/github_username/repo_name">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a> -->
-
-<h3 align="center">Text-Annotation-Tool</h3>
-
-  <p align="center">
-    A browser-based tool for annotating texts for NLP/ML tasks. 
-    <br />
-    <a href="https://qluan1.github.io/text-annotation-tool/">Try App</a>
-    ·
-    <a href="https://github.com/qluan1/text-annotation-tool/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/qluan1/text-annotation-tool/issues">Request Feature</a>
-  </p>
+    <h3 align="center">Text-Annotation-Tool</h3>
+    <p align="center">
+        A browser-based tool for annotating texts for NLP/ML tasks. 
+        <br />
+        <a href="https://qluan1.github.io/text-annotation-tool/">Try App</a>
+        ·
+        <a href="https://github.com/qluan1/text-annotation-tool/issues">Report Bug</a>
+        ·
+        <a href="https://github.com/qluan1/text-annotation-tool/issues">Request Feature</a>
+    </p>
 </div>
 
 
@@ -52,18 +50,21 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 <div align = "center">
-    <img src="img/app.jpg" alt="Screenshot" width="450" height="250">
+    <img src="img/app.jpg" alt="Screenshot" width="450" height="350">
 </div>
 
-Text-Annotation-Tool is a single-page application that provides an user-friendly interface for annotating texts.
+<br>
+<strong>Text-Annotation-Tool</strong> is, as its name suggests, a user-friendly single-page application for assisting text annotations.
 
-Functionalities include (a) mouse selection for intuitive labeling and (b) existing labels presentation for straight-forward reviewing.  
+<br>
+This application has the following features.
 
-All datas are processed and stored locally.
+- Adding/removing annotation labels with intuitive mouse inputs.
+- Making annotation review easier by providing a clean and clear presentation.    
+- All datas are processed and stored locally.
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 
 ### Built With
@@ -74,13 +75,12 @@ All datas are processed and stored locally.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-
 <!-- GETTING STARTED -->
 ## Getting Started
 
 <h2 align="center">You ONLY need a modern browser to use the application. </h2> 
 
-To get the development version up and running follow these simple example steps.
+To get the development build up and running follow these simple example steps.
 
 <!-- ### Prerequisites
 
@@ -149,7 +149,7 @@ This is an example of how to list things you need to use the software and how to
  */
 ```
 
-A sample input file and a sample out file can be found in directory
+A sample input file and a sample output file can be found in directory
 ```sh
 /examples/
 ```
@@ -161,11 +161,11 @@ A sample input file and a sample out file can be found in directory
 <!-- ROADMAP -->
 ## Roadmap
 
-- [✓] Basic Annotation Functionalities
-- [✓] Basic Customizable Appearances
-- [X] Advance Annotation Functionalites such as (annotating Hierarchical Labels)
-- [X] Keyboard Control Support
-- [X] Work-flow
+- [X] Basic Annotation Functionalities
+- [X] Basic Customizable Appearances
+- [] Advance Annotation Functionalites such as (annotating Hierarchical Labels)
+- [] Keyboard Control Support
+- [] Work-flow
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
