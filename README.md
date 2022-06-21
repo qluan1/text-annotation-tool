@@ -13,7 +13,7 @@
   <p align="center">
     A browser-based tool for annotating texts for NLP/ML tasks. 
     <br />
-    <a href="https://github.com/qluan1/text-annotation-tool">Try App</a>
+    <a href="https://qluan1.github.io/text-annotation-tool/">Try App</a>
     ·
     <a href="https://github.com/qluan1/text-annotation-tool/issues">Report Bug</a>
     ·
