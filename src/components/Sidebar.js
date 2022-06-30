@@ -4,7 +4,7 @@ import {copyDisplaySettings} from './util';
 import { createFileAndGetURL } from './writeToFile';
 import addFileIcon from '../assets/icons/uploadFile.svg'
 import downloadIcon from '../assets/icons/download.svg'
-import prepFileIcon from '../assets/icons/prepFile.svg'
+//import prepFileIcon from '../assets/icons/prepFile.svg'
 
 function Sidebar (props) {
 
@@ -78,24 +78,67 @@ function Sidebar (props) {
                     id = "get-file-button"
                     className =  "file-inoutput-label"
                     onClick={ () => {
+                        // pop a confirmation window for download
                         let stream = props.getOutputData();
                         if (stream === null) {
                             return;
                         }
                         let url = null;
                         url = createFileAndGetURL(stream, url);
-                        downloadLinkRef.current.href = url;
-                        downloadLinkRef.current.style.display = 'flex';
-                        getFileLinkRef.current.style.display = 'none';
-
+                        let downloadProps = {};
+                        downloadProps.title = 'Download File'
+                        downloadProps.content = (
+                            <label>
+                                File Name:
+                                <input 
+                                    id = 'download-file-name-input'
+                                    type = 'text'
+                                    placeholder= 'annotation.json'
+                                    autoFocus = {true}
+                                    style = {{marginLeft: '15px'}}
+                                >
+                                </input>
+                            </label>
+                        );
+                        downloadProps.isActive = true;
+                        downloadProps.onConfirm = () => {
+                            let fileName = 'annotation.json';
+                            let inputElement = document.getElementById('download-file-name-input');
+                            if (inputElement !== null) {
+                                const fileNameReg = /^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\.[a-zA-Z0-9_-]+$/;
+                                const ok = fileNameReg.exec(inputElement.value);
+                                if (!ok) {
+                                    console.log('input filename is NOT valid, using "annotation.json" instead.');
+                                } else {
+                                    fileName = inputElement.value.trim();
+                                }
+                            }
+                            let b = document.createElement('a');
+                            b.href = url;
+                            b.download = fileName; 
+                            b.style.visibility = 'hidden';
+                            document.body.appendChild(b);
+                            b.click();
+                            document.body.removeChild(b);
+                        };
+                        props.popConfDial(downloadProps);
+                        setTimeout(
+                            () => {
+                                let inputElement = document.getElementById('download-file-name-input');
+                                if (inputElement !== null) {
+                                    inputElement.focus();
+                                }
+                            },
+                            250
+                        );
                     }}
                 >
-                    <img src = {prepFileIcon} alt = "Write"/>
-                    <span>Write File</span>   
+                    <img src = {downloadIcon} alt = "Download"/>
+                    <span>Download</span>   
                 </div>
 
 
-                <a 
+                {/* <a 
                     download = {'annotated.json'}
                     ref = {downloadLinkRef}
                     className = "file-inoutput-label"
@@ -107,7 +150,7 @@ function Sidebar (props) {
                 >
                     <img src = {downloadIcon} alt ="Download"/>
                     <span>Download</span>
-                </a>
+                </a> */}
 
 
 

@@ -170,6 +170,10 @@ function App () {
                 loadData = {loadData}
                 getOutputData = {outputData}
                 sidebarWidth = {sidebarWidth}
+                popConfDial = { (p) => {
+                    setConfDialProps(p);
+                    setDrawState(!drawStateRef.current);
+                }}
             />
 
             <Canvas 
