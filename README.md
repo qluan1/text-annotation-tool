@@ -163,6 +163,9 @@ A sample input file and a sample output file can be found in directory
 
 - [X] Basic Annotation Functionalities
 - [X] Basic Customizable Appearances
+- [X] User Input Download File Name
+- [] Mark task as read
+- [] Restoring last section
 - [] Advance Annotation Functionalites such as (annotating Hierarchical Labels)
 - [] Keyboard Control Support
 - [] Work-flow

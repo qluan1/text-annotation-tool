@@ -47,6 +47,38 @@ function Sidebar (props) {
         props.setDisplaySettings(newDisplaySettings);
     }
 
+    let handleKeyPress = (e) => {
+        let dialogBG = document.getElementById('confirm-dialog-background');
+        if (
+            dialogBG !== null &&
+            dialogBG.style.display === 'block'
+        ) {
+            return;
+        }
+        let input = document.getElementById('nav-task-input');
+        if (
+            input !== null &&
+            input === document.activeElement
+        ) {
+            return;
+        }
+        if (e.keyCode == '37') {
+            //left arrow
+            goToPrev();
+            return;
+        } else if (e.keyCode == '39') {
+            //right arrow
+            goToNext();
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener('keydown', handleKeyPress);
+        return (()=> {
+            document.removeEventListener('keydown', handleKeyPress);
+        });
+    }, []);
+
     return (
         <aside className = "sidebar" style = {{width: props.sidebarWidth}}>
             <div className = "sidebar-title">Text-Annotation-Tool</div>
@@ -185,7 +217,8 @@ function Sidebar (props) {
                     </span>
                 </div>
                 <div>
-                    <input 
+                    <input
+                        id = 'nav-task-input' 
                         ref = {inputTaskNumberRef}
                         type = "text"
                         value = {inputTask}
